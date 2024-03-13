@@ -1,0 +1,16 @@
+{
+  "name": "festivalmusica-arreglo",
+  "version": "1.0.0",
+  "description": "Proyecto con SASS, Gulp y HTML",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ana Bernal",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-sass": "^5.1.0",
+    "sass": "^1.71.1"
+  }
+}
