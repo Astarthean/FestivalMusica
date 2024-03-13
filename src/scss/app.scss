@@ -1,5 +1,9 @@
-$color: blue;
 
-body {
-    background-color: $color;
-}
+// //Forma anterior-----------
+// @import 'base/variables'; //import disponible globalmente (problema performance)
+
+//Forma nueva-----------------
+//@forward apunta a donde estan los archivos
+//@use compila y usa los archivos
+@use 'base'; //Va a la carpeta base a recuperar los datos del index. no disponible globalmente
+@use 'layout';

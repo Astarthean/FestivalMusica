@@ -14,16 +14,18 @@ const { src, dest, watch } = require("gulp"); //Importo el modulo de gulp para t
 
 // const sass = require("sass"); //Cargamos el plugin SASS para poder compilarlo a CSS (import de sass). Pero no sirve, no conecta gulp con sass
 const sass = require("gulp-sass")(require('sass')); //Cargamos el plugin SASS de GULP
+const plumber = require('gulp-plumber'); //Para que no detenga todo si hay un error
 
 function css(done) {
-  src("src/scss/app.scss")    //identifica el archivo sass
+  src("src/scss/**/*.scss")    //identifica el archivo sass
+    .pipe(plumber())
     .pipe(sass())             //aplica sass. compila
     .pipe(dest("build/css")); //guarda en css. almacena en disco
     done();
 }
 
 function dev(done) {
-    watch("src/scss/app.scss", css)
+    watch("src/scss/**/*.scss", css)
     done();
 }
 

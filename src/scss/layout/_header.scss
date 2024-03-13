@@ -1,0 +1,19 @@
+
+@use '../base/variables' as v;
+
+.header {
+    background-color: v.$verde;
+    h1 { //Anidamiento en SASS
+        color: v.$blanco;
+    }
+}
+
+.navegacion-principal {
+    a {
+        color: v.$blanco;
+        font-size: 2.4rem;
+        &:hover{ //El & hace que no se agrege un espacio en el css por la anidacion. Entiende que a va junto a hover
+            color: v.$amarillo;
+        }
+    }
+}
