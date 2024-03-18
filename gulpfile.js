@@ -16,6 +16,10 @@ const { src, dest, watch, parallel } = require("gulp"); //Importo el modulo de g
 // const sass = require("sass"); //Cargamos el plugin SASS para poder compilarlo a CSS (import de sass). Pero no sirve, no conecta gulp con sass
 const sass = require("gulp-sass")(require('sass')); //Cargamos el plugin SASS de GULP
 const plumber = require('gulp-plumber'); //Para que no detenga todo si hay un error
+const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
+const postcss = require('gulp-postcss')
+const sourcemaps = require( 'gulp-sourcemaps' );
 
 //Imagenes------------------
 const cache = require('gulp-cache');
@@ -23,10 +27,16 @@ const imagemin = require('gulp-imagemin');  //Comprimir imagenes
 const webp = require('gulp-webp'); 
 const avif = require('gulp-avif');  
 
+//JavaScript
+const terser = require('gulp-terser-js');
+
 function css(done) {
   src("src/scss/**/*.scss")    //identifica el archivo sass
+    .pipe(sourcemaps.init( ) )  //Inicializa las mapeado de archivos
     .pipe(plumber())
     .pipe(sass())             //aplica sass. compila
+    .pipe(postcss([autoprefixer(), cssnano]))
+    .pipe(sourcemaps.write('.')) //Indica donde guardara los mapas de archivos
     .pipe(dest("build/css")); //guarda en css. almacena en disco
     done();
 }
@@ -61,13 +71,24 @@ function versionAvif(done){
   done();
 }
 
+function javascript(done){
+  src('src/js/**/*.js')
+  .pipe(sourcemaps.init())
+  .pipe(terser())
+  .pipe(sourcemaps.write('.'))
+  .pipe(dest( 'build/js' ));
+  done();
+}
+
 function dev(done) {
     watch("src/scss/**/*.scss", css)
+    watch("src/js/**/*.js", javascript)
     done();
 }
 
 exports.css = css;
+exports.js = javascript;
 exports.imagenes = imagenes;
 exports.versionWebp = versionWebp;
 exports.versionAfiv = versionAvif;
-exports.dev = parallel(imagenes, versionWebp, versionAvif, dev);
+exports.dev = parallel(imagenes, versionWebp, versionAvif, javascript, dev);
